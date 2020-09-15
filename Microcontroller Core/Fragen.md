@@ -12,23 +12,23 @@ A3: Program counter <br>
 A4: read-write initialized data (x) <br>
 A5: read-write zero-initialized data (x)
 
-Q3: drawbacks of instruction piplines <br>
+Q3: drawbacks of instruction piplines? <br>
 A1: control hazard (x) <br>
 A2: Data is not available for processing (x) <br>
 A3: Instructions have to be decoded <br>
 A4: data shall be read and writen form/to the same resource (x)<br>
 A5: It takes long to write to RAM
 
-Q4: <br>
-A1: <br>
-A2: <br>
-A3: <br>
-A4: <br>
-A5: 
+Q4: Which of to following is not a micro-controller peripheral ?<br>
+A1: SRAM (Static random-access memory)<br>
+A2: DMA (Direct Memory Access)<br>
+A3: ADC (Analog-to-digital converter) <br>
+A4: GPR (General Purpose Register) (x)<br>
+A5: GPIO (General-purpose input/output)
 
-Q5: <br>
-A1: <br>
-A2: <br>
-A3: <br>
-A4: <br>
-A5: 
+Q5: Which are selection criterias for Mirco Controller <br>
+A1: Cost (x)<br>
+A2: Power consumption (x)<br>
+A3: Size (x)<br>
+A4: Integrity (x)<br>
+A5: Integrated peripherals (x)
