@@ -86,38 +86,6 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
-  //config PWM Timer
-
-
-  TIM_TypeDef instance = {0};
-
-  TIM_Base_InitTypeDef init = {0};
-  init.Prescaler = 40000;
-  init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  init.Period = 500;
-  init.RepetitionCounter = 0;
-  init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  init.CounterMode = TIM_COUNTERMODE_UP;
-
-
-
-
-  TIM_HandleTypeDef PWM_Config = {0};
-  PWM_Config.Instance = NULL;
-  PWM_Config.Init = init;
-
-
-  //HAL_TIM_PWM_MspInit(&PWM_Config);
-
-
-  HAL_TIM_PWM_Init(&init);
-
-  //HAL_TIM_PWM_ConfigChannel();
-
-
-
-  //TIM_Base_SetConfig(TIM1, &PWM_Config);
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
