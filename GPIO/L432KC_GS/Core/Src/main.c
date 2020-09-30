@@ -18,10 +18,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-
-#define HAL_TIM_MODULE_ENABLED
-
-#include <main.h>
+#include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,7 +40,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
@@ -54,6 +50,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
+
+void blinky(uint8_t brightness);
 
 /* USER CODE END PFP */
 
@@ -93,7 +91,22 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  /* configure LED Pin D6/PB1 as Output*/
+  //Output
+  GPIOB->MODER |= (1<<2);
+  GPIOB->MODER &= ~(1<<3);
 
+  /*
+  GPIOB->MODER &= ~(1<<3);
+  //Output Push pull
+  GPIOB->OTYPER &= ~(1<<2);
+  //Speed Low
+  GPIOB->OSPEEDR &= ~((1<<2) | (1<<3));
+  //No pull-up, pull-down
+  GPIOB->PUPDR &= ~((1<<2) | (1<<3));
+  */
+
+  /* configure Button Pin D11/PB5 as Input*/
 
   /* USER CODE END 2 */
 
@@ -102,9 +115,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_3);
-	HAL_Delay(1000);
+	  blinky(50);
 
     /* USER CODE BEGIN 3 */
   }
@@ -236,6 +247,19 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void blinky(uint8_t brightness)
+{
+	GPIOB->ODR |= (1<<1);
+	for(int i = 10;i >0;i--){
+		HAL_Delay(brightness);
+		GPIOB->ODR |= (1<<1);
+		HAL_Delay(100 - brightness);
+		GPIOB->ODR &= ~(1<<1);
+	}
+    GPIOB->ODR &= ~(1<<1);
+	HAL_Delay(1000);
+}
 
 /* USER CODE END 4 */
 
