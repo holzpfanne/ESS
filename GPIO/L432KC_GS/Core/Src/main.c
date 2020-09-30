@@ -40,6 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
@@ -107,6 +108,8 @@ int main(void)
   */
 
   /* configure Button Pin D11/PB5 as Input*/
+  GPIOB->MODER &= ~((1<<10) | (1<<11));
+
 
   /* USER CODE END 2 */
 
@@ -116,7 +119,6 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  blinky(50);
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -250,12 +252,13 @@ static void MX_GPIO_Init(void)
 
 void blinky(uint8_t brightness)
 {
+	if(brightness > 100) {brightness = 100;}
 	GPIOB->ODR |= (1<<1);
-	for(int i = 10;i >0;i--){
-		HAL_Delay(brightness);
+	for(int i = 100;i >0;i--){
 		GPIOB->ODR |= (1<<1);
-		HAL_Delay(100 - brightness);
+		HAL_Delay(brightness/10);
 		GPIOB->ODR &= ~(1<<1);
+		HAL_Delay((100 - brightness)/10);
 	}
     GPIOB->ODR &= ~(1<<1);
 	HAL_Delay(1000);
