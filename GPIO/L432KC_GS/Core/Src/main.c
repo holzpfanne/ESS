@@ -53,6 +53,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 void blinky(uint8_t brightness);
+_Bool buttoncheck();
 
 /* USER CODE END PFP */
 
@@ -121,7 +122,7 @@ int main(void)
   GPIO_InitStruct_BUTTON.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct_BUTTON);
 #endif
-
+  uint8_t count = 2;
 
   /* USER CODE END 2 */
 
@@ -130,16 +131,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-#ifndef HAL
-	  if((GPIOB->IDR & (1<<5)) == (1<<5)){
-#else
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-#endif
-		  blinky(90);
+	  if(buttoncheck()){
+
+		  count += 2;
+		  if(count > 10) {count = 2;}
 	  }
-	  else{
-		  blinky(10);
-	  }
+	  blinky(count * 10);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -284,6 +281,15 @@ void blinky(uint8_t brightness)
     GPIOB->ODR &= ~(1<<1);
 	HAL_Delay(1000);
 }
+
+_Bool buttoncheck()
+{
+	if((GPIOB->IDR & (1<<5)) == (1<<5)){
+		HAL_Delay(200);
+		if((GPIOB->IDR & (1<<5)) == (1<<5)){return 1;}
+	}
+	return 0;
+}
 #else
 void blinky(uint8_t brightness)
 {
@@ -297,7 +303,20 @@ void blinky(uint8_t brightness)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_Delay(1000);
 }
+
+_Bool buttoncheck()
+{
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
+		HAL_Delay(200);
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){return 1;}
+	}
+	return 0;
+}
 #endif
+
+
+
+
 
 /* USER CODE END 4 */
 
