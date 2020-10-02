@@ -1,8 +1,45 @@
-\documentclass[A4]{article}
+\documentclass{article}
 
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[document]{ragged2e}
+
+\usepackage{tikz}
+\usepackage[siunitx, EFvoltages, straightvoltages]{circuitikz}
 
 \begin{document}
-    
- test text for displaying
 
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}
+    \ctikzset{multipoles/font={\color{red}\tiny},
+      monopoles/vcc/arrow={Triangle[width=0.8*\scaledwidth, length=\scaledwidth]}}
+    \draw (0,0) node[qfpchip, num pins=32, external pad fraction=6,rotate=90](C){\rotatebox{-90}{IC1}};
+
+    \node [font=\tiny\ttfamily, left, xshift=-0.5cm] at(C.pin 15) {PB1};
+    \node [font=\tiny\ttfamily, right, xshift=0.5cm] at(C.pin 28) {PB5};
+
+    \draw (C.pin 15) -- ++(2cm,0) to[european resistor, l=$R_2$, i=$i_D$] ++(0,-2) to[empty led, l=$\quad D$,v=$U_D$] ++(0,-2) node[ground]{};
+    \draw (C.pin 28) -- ++(-1cm,0) to[european resistor, l=$R_1$] ++(0,2) node[vcc]{VCC};
+    \draw (C.pin 28) -- ++(-1cm,0) to[push button, l=$S_1$] ++(0,-2) node[ground]{};
+  \end{circuitikz}
+\end{figure}
+
+
+Maximaler Eingangsstrom : $I_{in max} = 5mA$
+\newline
+High Voltage : $VCC = 3.3V$
+\newline
+\bigskip
+$$R_{1 min}=\frac{VCC}{I_{in max}}=\frac{3.3V}{5mA} = 660\Omega$$
+
+Für $R_1$ wurde eine $1M\Omega$ Widerstand gewäht um den Strom so gering wie möglich zu halten.
+\newline
+\bigskip
+LED Strom : $i_D = 20mA$\newline
+LED Spannung : $U_D = 1.7V$
+
+$$R_{2 min}=\frac{VCC - U_D}{i_D}=\frac{3.3V - 1.7V}{20mA}=80\Omega$$
+
+Für $R_2$ wurde ein $470\Omega$ Widerstand wurde gewählt damit die LED nicht zu hell ist.
 \end{document}
