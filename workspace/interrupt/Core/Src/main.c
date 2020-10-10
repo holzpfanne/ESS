@@ -62,16 +62,58 @@ static void MX_TIM6_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+uint32_t pulse = 50;
+_Bool GPIO_interrupt_lock = 0;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	static uint8_t postcounter = 0, lockcounter = 0;
+	postcounter++;
+	static _Bool toggle = 1;
+
+	if(GPIO_interrupt_lock){
+		lockcounter++;
+		if(lockcounter >= 3){
+			GPIO_interrupt_lock = 0;
+			lockcounter = 0;
+			HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+			HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin,GPIO_PIN_RESET);
+		}
+	}
+
+	if(postcounter >= 100) {
+		postcounter = 0;
+		toggle ^= 1;
+		if(toggle){
+			//Pulse register
+			TIM2->CCR1 = 0;
+		}
+		else
+		{
+			TIM2->CCR1 = pulse;
+		}
+	}
+
+
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin != 32) {return;}
+	//I don't know why 32., Debugging showed
+	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+	//signal that interrupt was triggered
+	HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin,GPIO_PIN_SET);
 	static _Bool toggle = 1;
 	toggle ^= 1;
+
 	if(toggle){
-		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+		pulse = 5;
 	}
 	else
 	{
-		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+		pulse = 50;
 	}
+	GPIO_interrupt_lock = 1;
 }
 
 /* USER CODE END 0 */
@@ -113,17 +155,16 @@ int main(void)
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   HAL_TIM_Base_Start_IT(&htim6);
 
+  //Init finished
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  __HAL_TIM_ENABLE(&htim2);
-	  HAL_Delay(500);
-	  __HAL_TIM_DISABLE(&htim2);
-	  //////NOT WORKING
-	  HAL_Delay(500);
+
 
     /* USER CODE END WHILE */
 
@@ -240,7 +281,7 @@ static void MX_TIM2_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 5;
+  sConfigOC.Pulse = 50;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -274,7 +315,7 @@ static void MX_TIM6_Init(void)
   htim6.Instance = TIM6;
   htim6.Init.Prescaler = 32000;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 1000;
+  htim6.Init.Period = 10;
   htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
@@ -353,9 +394,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PB5 */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 
