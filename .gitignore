@@ -10,5 +10,8 @@ STM*
 !.gitignore
 main.h
 
+docu
+!*.tex
+
 #not working but is tracked anyway
 !main.c
