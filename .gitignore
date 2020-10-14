@@ -7,6 +7,7 @@ stm*
 STM*
 *.launch
 .*
+!.gitignore
 main.h
 
 #not working but is tracked anyway
