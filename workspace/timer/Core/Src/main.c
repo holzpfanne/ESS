@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <timeout.h>
 
 /* USER CODE END Includes */
 
@@ -60,6 +61,11 @@ static void MX_TIM16_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	return;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -94,13 +100,20 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
+
+  _tim_timeout_blocking(1, '1');
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+
+
+
+	/* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
