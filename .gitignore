@@ -1,5 +1,13 @@
-*
-!*.md
+*.pdf
+Startup
+Debug
+Drivers
+sys*
+stm*
+STM*
+*.launch
+.*
+main.h
 
 #not working but is tracked anyway
 !main.c
