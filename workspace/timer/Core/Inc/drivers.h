@@ -6,7 +6,7 @@
 
 TIM_HandleTypeDef config_timer(uint16_t Prescaler, uint16_t Period, TIM_TypeDef *timer);
 
-void start_timer(TIM_HandleTypeDef htim16);
+void start_timer(TIM_HandleTypeDef *htimX);
 
 _Bool sleeplock;
 void enterSleepMode();

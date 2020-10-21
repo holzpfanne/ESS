@@ -36,7 +36,7 @@ _Bool _tim_timeout_blocking(uint16_t seconds, char scaler)
 	TIM_HandleTypeDef htim16;
 	if(set_timer(seconds, scaler, TIM16, &htim16) == 0) {return 0;}
 
-	start_timer(htim16);
+	start_timer(&htim16);
 	enterSleepMode();
 
 	return 1;
@@ -48,6 +48,6 @@ _Bool _tim_timeout_nonblocking_with_callback(uint16_t seconds, char scaler, void
 	if(set_timer(seconds, scaler, TIM6, &htim6) == 0) {return 0;}
 
 	timeout_callback = callback;
-	start_timer(htim6);
+	start_timer(&htim6);
 	return 1;
 }
