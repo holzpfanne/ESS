@@ -7,9 +7,9 @@ TIM_HandleTypeDef config_timer(uint16_t Prescaler, uint16_t Period, TIM_TypeDef 
 	if(timer == TIM6)
 	{
 		htimX.Instance = timer;
-		htimX.Init.Prescaler = 32000;
+		htimX.Init.Prescaler = Prescaler;
 		htimX.Init.CounterMode = TIM_COUNTERMODE_UP;
-		htimX.Init.Period = 1000;
+		htimX.Init.Period = Period;
 		htimX.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 	}
 	else if(timer == TIM16)
