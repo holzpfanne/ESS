@@ -63,24 +63,10 @@ static void MX_TIM6_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	if(htim->Instance == TIM16)
-	{
-		//HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-		sleeplock = 0;
-	}
-	else if(htim->Instance == TIM6)
-	{
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-		timeout_callback();
-	}
-}
-
 void toogle()
 {
-	//HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
-	HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+	//HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 }
 /* USER CODE END 0 */
 
@@ -128,7 +114,13 @@ int main(void)
   HAL_Delay(500);
 
 
-  _tim_timeout_nonblocking_with_callback(2, '1', &toogle);
+  _tim_timeout_nonblocking_with_callback(500, 'm', *toogle);
+  _tim_timeout_blocking(2, '1');
+  HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+  _tim_timeout_blocking(2, '1');
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+    _tim_timeout_blocking(2, '1');
+      HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 
   /* USER CODE END 2 */
 

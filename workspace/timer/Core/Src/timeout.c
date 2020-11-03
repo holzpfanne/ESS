@@ -17,15 +17,15 @@ _Bool set_timer(uint16_t seconds, char scaler, TIM_TypeDef *timer, TIM_HandleTyp
 	switch (scaler)
 	{
 	case 'u':
-		*timer_handler = config_timer(seconds, 32, timer);
+		*timer_handler = config_timer(32, seconds, timer);
 		break;
 
 	case 'm':
-		*timer_handler = config_timer(seconds, 32000, timer);
+		*timer_handler = config_timer(32000, seconds, timer);
 		break;
 
 	case '1':
-		*timer_handler = config_timer(seconds * 1000, 32000, timer);
+		*timer_handler = config_timer(32000, seconds * 1000, timer);
 		break;
 	}
 	return 1;

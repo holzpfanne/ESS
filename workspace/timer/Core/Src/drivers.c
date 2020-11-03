@@ -7,9 +7,9 @@ TIM_HandleTypeDef config_timer(uint16_t Prescaler, uint16_t Period, TIM_TypeDef 
 	if(timer == TIM6)
 	{
 		htimX.Instance = timer;
-		htimX.Init.Prescaler = 32000;
+		htimX.Init.Prescaler = Prescaler;
 		htimX.Init.CounterMode = TIM_COUNTERMODE_UP;
-		htimX.Init.Period = 1000;
+		htimX.Init.Period = Period;
 		htimX.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 	}
 	else if(timer == TIM16)
@@ -42,5 +42,29 @@ void enterSleepMode()
 	while(sleeplock)
 	{
 		HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON , PWR_SLEEPENTRY_WFI);
+	}
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	static _Bool first6 = 0, first16 = 0;
+
+	if(htim->Instance == TIM16)
+	{
+		if(first16)
+		{
+			sleeplock = 0;
+		}
+		else{first16 ^= 1;}
+
+	}
+	else if(htim->Instance == TIM6)
+	{
+		if(first6){
+			timeout_callback();
+		}
+		else{first6 ^= 1;}
+
+
 	}
 }

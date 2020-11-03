@@ -11,5 +11,8 @@ void start_timer(TIM_HandleTypeDef *htimX);
 _Bool sleeplock;
 void enterSleepMode();
 
+void (*timeout_callback)();
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+
 
 #endif
