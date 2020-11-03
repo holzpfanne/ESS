@@ -26,7 +26,7 @@ TIM_HandleTypeDef config_timer(uint16_t Prescaler, uint16_t Period, TIM_TypeDef 
 	HAL_TIM_Base_Init(&htimX);
 
 	//Set timer to One-pulse Mode
-	//HAL_TIM_OnePulse_Init(&htimX, TIM_OPMODE_SINGLE);
+	HAL_TIM_OnePulse_Init(&htimX, TIM_OPMODE_SINGLE);
 
 	return htimX;
 }
