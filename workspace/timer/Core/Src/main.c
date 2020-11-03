@@ -112,6 +112,7 @@ int main(void)
   HAL_Delay(500);
   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
   HAL_Delay(500);
+  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
 
 
   _tim_timeout_nonblocking_with_callback(500, 'm', *toogle);
