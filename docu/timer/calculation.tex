@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\usepackage[a4paper, left=2cm, right=2cm, top=3cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[document]{ragged2e}
+\usepackage{listings}
+
+\usepackage{tikz}
+\usepackage[siunitx, EFvoltages, straightvoltages]{circuitikz}
+
+\begin{document}
+
+\section*{functions}
+
+\subsection*{blocking}
+
+\_Bool \_tim\_timeout\_blocking(uint16\_t seconds, char scaler)
+
+Die Funktion wartet seconds mal dem scaler.
+
+scaler kann folgende Werte annehmen:
+
+1: 1\newline
+m: $10^{-3}$\newline
+u: $10^{-6}$
+
+Es kann maximal 65 Sekunden gewartet werden.
+
+Sollte die gewünschte Zeit nicht gewartet werden können wird $0$ (False) retuniert, an sonst $1$ (True).
+
+Wärent gewartet wird ist der Prozessor im Sleepmode, andere interrupts unterbrechen das warten nicht.
+
+\subsection*{nonblocking with callback}
+
+\_Bool \_tim\_timeout\_nonblocking\_with\_callback(uint16\_t seconds, char scaler, void (*callback)())
+
+Die funktion started eine funktion nach einer gegebenen Zeit: seconds mal scaler, das warten blockiert den programmablauf nicht.
+
+scaler kann folgende Werte annehmen:
+
+1: 1\newline
+m: $10^{-3}$\newline
+u: $10^{-6}$
+
+Es kann maximal 65 Sekunden gewartet werden.
+
+Sollte die gewünschte Zeit nicht gewartet werden können wird $0$ (False) retuniert, an sonst $1$ (True).
+
+\section*{resaults}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{logic.png}
+  
+\end{figure}
+
+Es wurde vor den Messpfeilen einmal mit einen non Blocking gestarted und dann eine Blocking. Blocking toggled Channel 0 mit 2Sekunden, und non blocking geht nach 500ms auf high. Dabei sieht man das sich die beiden nicht behindern.
+
+Die Zeit die gewartet wird ist immer etwas länger als die gewünschete weil Schritte wie die Zeit die die ISR braucht um zu starten nicht berücksichtigt wird.
+Aber auch zeiten der Konfiguration der Timer werden nicht berücksichtigt.
+
+Beide Funktionen können Gleichzeitig gestarted werden, aber die non blocking muss ausgelöst haben um erneut eine ausführen zu dürfen.
+
+
+\end{document}
