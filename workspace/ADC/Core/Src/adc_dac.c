@@ -1,20 +1,9 @@
 #include <adc_dac.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <string.h>
 
 ADC_HandleTypeDef hadc1;
 DAC_HandleTypeDef hdac1;
-
-int32_t strncmp(char *cmp1, char *cmp2, uint32_t len)
-{
-	int32_t cmp = 0;
-	for(uint32_t i = 0; i < len; i++)
-	{
-		cmp += cmp1[i] - cmp2[i];
-	}
-	return cmp;
-}
 
 uint32_t get_adc_channel(char *portPin)
 {

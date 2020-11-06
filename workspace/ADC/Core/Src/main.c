@@ -107,8 +107,8 @@ int main(void)
   MX_DAC1_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  _adc_configure("D6");
-  _dac_configure("A3");
+  _adc_configure("D3");
+  _dac_configure("A4");
 
 
   printf("start of program\n");
@@ -120,11 +120,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  for(uint16_t i = 0; i < 4084/10;i++)
+	  for(uint16_t i = 0; i < 10;i++)
 	  {
-		  HAL_Delay(10);
-		  _dac_setval(i*10, "A3");
-		  _adc_getval(&value, "D6");
+		  HAL_Delay(100);
+		  _dac_setval(i*10, "A4");
+		  _adc_getval(&value, "D3");
 		  printf("values: %d;%i;%i\n", i*10, value, i*10 - value);
 	  }
 
@@ -247,7 +247,7 @@ static void MX_ADC1_Init(void)
   }
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_16;
+  sConfig.Channel = ADC_CHANNEL_15;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
