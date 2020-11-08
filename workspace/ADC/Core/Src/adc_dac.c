@@ -25,8 +25,21 @@ uint32_t get_dac_channel(char *portPin)
 	return 0-1;
 }
 
+_Bool pinFree(char *portPin)
+{
+
+	return 1;
+}
+
 uint8_t _adc_configure(char *portPin)
 {
+	//check if Pin is already in use
+	if(!pinFree(portPin))
+	{
+		//pin used
+		return 4;
+	}
+
 	ADC_ChannelConfTypeDef sConfig = {0};
 	uint32_t channel;
 

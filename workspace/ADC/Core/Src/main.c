@@ -67,10 +67,23 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// route printf to UART
 int _write(int file, char *ptr, int len)
 {
 	HAL_UART_Transmit(&huart2,  (uint8_t*) ptr, len, 10);
     return len;
+}
+
+void ramp(char *adc, char *dac)
+{
+	uint16_t value;
+	for(uint16_t i = 0; i*10 < 4084;i++)
+		  {
+			  HAL_Delay(10);
+			  _dac_setval(i*10, dac);
+			  _adc_getval(&value, adc);
+			  printf("%d;%i;%i\n", i*10, value, i);
+		  }
 }
 
 /* USER CODE END 0 */
@@ -107,12 +120,12 @@ int main(void)
   MX_DAC1_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  _adc_configure("D3");
+  _adc_configure("A3");
   _dac_configure("A4");
 
 
   printf("start of program\n");
-  uint16_t value;
+  uint16_t light;
 
   /* USER CODE END 2 */
 
@@ -120,14 +133,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  for(uint16_t i = 0; i < 10;i++)
-	  {
-		  HAL_Delay(100);
-		  _dac_setval(i*10, "A4");
-		  _adc_getval(&value, "D3");
-		  printf("values: %d;%i;%i\n", i*10, value, i*10 - value);
-	  }
-
+	  HAL_Delay(100);
+	  _adc_getval(&light, "A3");
+	  printf("%d V\n",light);
 
     /* USER CODE END WHILE */
 

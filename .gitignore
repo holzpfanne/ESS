@@ -7,8 +7,10 @@ stm*
 STM*
 *.launch
 .*
+*.ods
 !.gitignore
 main.h
+
 
 docu
 !*.tex
