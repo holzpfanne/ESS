@@ -50,7 +50,7 @@ uint8_t _adc_configure(char *portPin)
 	  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
 	  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 	  hadc1.Init.LowPowerAutoWait = DISABLE;
-	  hadc1.Init.ContinuousConvMode = ENABLE;
+	  hadc1.Init.ContinuousConvMode = DISABLE;
 	  hadc1.Init.NbrOfConversion = 1;
 	  hadc1.Init.DiscontinuousConvMode = DISABLE;
 	  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
@@ -79,13 +79,14 @@ uint8_t _adc_configure(char *portPin)
 	  {
 		  return 3;
 	  }
-	  HAL_ADC_Start(&hadc1);
+
 
 	  return 0;
 }
 
 uint8_t _adc_getval(uint16_t *pValue, char *portPin)
 {
+	HAL_ADC_Start(&hadc1);
 	*pValue = HAL_ADC_GetValue(&hadc1);
 	return 0;
 }
