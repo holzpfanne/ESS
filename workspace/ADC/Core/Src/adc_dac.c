@@ -47,13 +47,15 @@ uint8_t _adc_configure(char *portPin)
 		//pin not known
 		return 2;
 	}
-	//check if Pin is already in use
+
+	//check if Pin is already in use as DAC
 	if (!adc_pinFree(channel))
 	{
-		//pin used
+		//pin already in use by a DAC
 		return 4;
 	}
 
+	//Init ADC
 	hadc1.Instance = ADC1;
 	hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
 	hadc1.Init.Resolution = ADC_RESOLUTION_12B;
@@ -73,8 +75,7 @@ uint8_t _adc_configure(char *portPin)
 	{
 		return 1;
 	}
-	/** Configure Regular Channel
-	  */
+
 	adc_channel = channel;
 	sConfig.Channel = channel;
 	sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -110,28 +111,27 @@ uint8_t _dac_configure(char *portPin)
 {
 	DAC_ChannelConfTypeDef sConfig = {0};
 	uint32_t channel;
+
 	if ((channel = get_dac_channel(portPin)) == (uint32_t)0 - 1)
 	{
 		//pin not known
 		return 2;
 	}
+
+	//check if Pin is already in use as ADC
 	if (!dac_pinFree(channel))
 	{
+		//pin already as ADC in use
 		return 4;
 	}
 
-	/* USER CODE BEGIN DAC1_Init 1 */
-
-	/* USER CODE END DAC1_Init 1 */
-	/** DAC Initialization
-	  */
+	//Init DAC
 	hdac1.Instance = DAC1;
 	if (HAL_DAC_Init(&hdac1) != HAL_OK)
 	{
 		return 1;
 	}
-	/** DAC channel OUT1 config
-	  */
+
 	sConfig.DAC_SampleAndHold = DAC_SAMPLEANDHOLD_DISABLE;
 	sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
 	sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;

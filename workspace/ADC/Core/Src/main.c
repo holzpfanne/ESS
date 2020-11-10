@@ -121,7 +121,7 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   _adc_configure("A3");
-  _dac_configure("A3");
+  _dac_configure("A4");
 
 
   printf("start of program\n");
