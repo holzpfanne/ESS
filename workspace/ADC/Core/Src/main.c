@@ -121,7 +121,7 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   _adc_configure("A3");
-  _dac_configure("A4");
+  _dac_configure("A3");
 
 
   printf("start of program\n");
@@ -135,7 +135,7 @@ int main(void)
   {
 	  HAL_Delay(100);
 	  _adc_getval(&light, "A3");
-	  printf("%d V\n",light);
+	  printf("%d mV\n", (int)(light*((3.3/4084)*1000)));
 
     /* USER CODE END WHILE */
 

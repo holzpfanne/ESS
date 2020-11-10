@@ -9,7 +9,8 @@
 
 /*! \brief Function _adc_configure() initializes the ADC for single conversion
  *         of the given portPin.
- *  \param portPin is the port pin that shall be converted
+ *  \param portPin is the port pin that shall be converted as string
+ *  			   e.g.: "PA3", "A7"
  *  \returns 0 upon success, >0 on error
  */
 uint8_t _adc_configure(char *portPin);
@@ -31,6 +32,12 @@ uint8_t _adc_getval(uint16_t *pValue, char *portPin);
  */
 uint8_t _dac_setval(uint16_t value, char *portPin);
 
+/*! \brief Function _dac_configure() initializes the DAC
+ *         of the given portPin.
+ *  \param portPin is the port pin that shall be converted
+ *  			   e.g.: "PA4", "A3"
+ *  \returns 0 upon success, >0 on error
+ */
 uint8_t _dac_configure(char *portPin);
 
 
