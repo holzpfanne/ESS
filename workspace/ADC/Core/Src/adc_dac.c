@@ -55,27 +55,7 @@ uint8_t _adc_configure(char *portPin)
 		return 4;
 	}
 
-	//Init ADC
-	hadc1.Instance = ADC1;
-	hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-	hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-	hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-	hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-	hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-	hadc1.Init.LowPowerAutoWait = DISABLE;
-	hadc1.Init.ContinuousConvMode = DISABLE;
-	hadc1.Init.NbrOfConversion = 1;
-	hadc1.Init.DiscontinuousConvMode = DISABLE;
-	hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-	hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-	hadc1.Init.DMAContinuousRequests = DISABLE;
-	hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
-	hadc1.Init.OversamplingMode = DISABLE;
-	if (HAL_ADC_Init(&hadc1) != HAL_OK)
-	{
-		return 1;
-	}
-
+	//init channel
 	adc_channel = channel;
 	sConfig.Channel = channel;
 	sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -93,6 +73,7 @@ uint8_t _adc_configure(char *portPin)
 
 uint8_t _adc_getval(uint16_t *pValue, char *portPin)
 {
+	if(get_adc_channel(portPin) != adc_channel) {return 1;}
 	HAL_ADC_Start(&hadc1);
 	*pValue = HAL_ADC_GetValue(&hadc1);
 	return 0;
@@ -149,6 +130,7 @@ uint8_t _dac_configure(char *portPin)
 
 uint8_t _dac_setval(uint16_t value, char *portPin)
 {
+	if(get_dac_channel(portPin) != dac_channel){return 2;}
 	if (HAL_DAC_SetValue(&hdac1, get_dac_channel(portPin), DAC_ALIGN_12B_R, value) == HAL_OK)
 	{
 		return 0;

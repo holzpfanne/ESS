@@ -77,13 +77,14 @@ int _write(int file, char *ptr, int len)
 void ramp(char *adc, char *dac)
 {
 	uint16_t value;
+	printf("Soll;Ist;Time steps");
 	for(uint16_t i = 0; i*10 < 4084;i++)
-		  {
-			  HAL_Delay(10);
-			  _dac_setval(i*10, dac);
-			  _adc_getval(&value, adc);
-			  printf("%d;%i;%i\n", i*10, value, i);
-		  }
+	{
+		HAL_Delay(10);
+		_dac_setval(i*10, dac);
+		_adc_getval(&value, adc);
+		printf("%d;%i;%i\n", i*10, value, i);
+	}
 }
 
 /* USER CODE END 0 */
@@ -124,7 +125,11 @@ int main(void)
   _dac_configure("A4");
 
 
-  printf("start of program\n");
+  printf("start ramp\n");
+  ramp("A3", "A4");
+
+  _adc_configure("A2");
+  printf("read photo resistor\n");
   uint16_t light;
 
   /* USER CODE END 2 */
@@ -134,7 +139,7 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(100);
-	  _adc_getval(&light, "A3");
+	  _adc_getval(&light, "A2");
 	  printf("%d mV\n", (int)(light*((3.3/4084)*1000)));
 
     /* USER CODE END WHILE */
