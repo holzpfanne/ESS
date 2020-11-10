@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[a4paper, left=3cm, right=3cm, top=4cm]{geometry}
+\usepackage[a4paper, left=3cm, right=3cm, top=3cm]{geometry}
 
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
@@ -11,17 +11,7 @@
 
 \begin{document}
 
-\section*{ADC Kennlinie}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.5]{Diagram.png}
-  
-\end{figure}
-
-Der ADC ist weitgehen Liniear, bis auf das obere Ende. Außerdem sind die Ist Werte immer etwas kleiner.
-
-\section*{Photo Widerstand}
+\section*{Beschaltung}
 
 \begin{figure}[h]
   \centering
@@ -31,13 +21,28 @@ Der ADC ist weitgehen Liniear, bis auf das obere Ende. Außerdem sind die Ist We
     \draw (0,0) node[qfpchip, num pins=32, external pad fraction=6,rotate=0](C){\rotatebox{-0}{STM32L432KCUx}};
 
     \node [font=\tiny\ttfamily, left, xshift=-0.5cm] at(C.pin 22) {PA4/A3};
+    \node [font=\tiny\ttfamily, left, xshift=-0.5cm] at(C.pin 23) {PA5/A4};
+    \draw (C.pin 22) -- ++(0.3cm,0) |- (C.pin 23);
 
-    \draw (C.pin 22) -- ++(1.3cm,0) to[european resistor, l=$R_1$] ++(0,2) node[vcc]{VCC};
-    \draw (C.pin 22) -- ++(1.3cm,0) to[photoresistor, l=$R_L$, v=$V_L$] ++(0,-2) node[ground]{};
+    \node [font=\tiny\ttfamily, left, xshift=-0.5cm] at(C.pin 21) {PA3/A2};
+    \draw (C.pin 21) -- ++(1.3cm,0) to[european resistor, l=$R_1$] ++(0,2) node[vcc]{VCC};
+    \draw (C.pin 21) -- ++(1.3cm,0) to[photoresistor, l=$R_L$, v=$V_L$] ++(0,-2) node[ground]{};
   \end{circuitikz}
 \end{figure}
 
+\section*{ADC Kennlinie}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{Diagram.png}
+  
+\end{figure}
+Der DAC wurde auf wurde für Pin A4/PA5 konfiguriert und für den ADC Pin A3/PA4.
+Der ADC ist weitgehen Liniear, bis auf das obere Ende. Außerdem sind die Ist Werte immer etwas kleiner.
+
+\section*{Photo Widerstand}
+
+Der ADC wurde für Pin A2/PA3 neu konfiguriert. \newline
 
 High Voltage : $VCC = 3.3V$
 \newline
