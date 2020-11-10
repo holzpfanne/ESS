@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage[a4paper, left=3cm, right=3cm, top=4cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[document]{ragged2e}
+
+\usepackage{tikz}
+\usepackage[siunitx, EFvoltages, straightvoltages]{circuitikz}
+
+\begin{document}
+
+\section*{ADC Kennlinie}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{Diagram.png}
+  
+\end{figure}
+
+Der ADC ist weitgehen Liniear, bis auf das obere Ende. Außerdem sind die Ist Werte immer etwas kleiner.
+
+\section*{Photo Widerstand}
+
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}
+    \ctikzset{multipoles/font={\color{red}\tiny},
+      monopoles/vcc/arrow={Triangle[width=0.8*\scaledwidth, length=\scaledwidth]}}
+    \draw (0,0) node[qfpchip, num pins=32, external pad fraction=6,rotate=0](C){\rotatebox{-0}{STM32L432KCUx}};
+
+    \node [font=\tiny\ttfamily, left, xshift=-0.5cm] at(C.pin 22) {PA4/A3};
+
+    \draw (C.pin 22) -- ++(1.3cm,0) to[european resistor, l=$R_1$] ++(0,2) node[vcc]{VCC};
+    \draw (C.pin 22) -- ++(1.3cm,0) to[photoresistor, l=$R_L$, v=$V_L$] ++(0,-2) node[ground]{};
+  \end{circuitikz}
+\end{figure}
+
+
+
+High Voltage : $VCC = 3.3V$
+\newline
+Pull up Widerstand : $R_1 = 10k\Omega$
+\newline
+\bigskip
+$$V_L=\frac{VCC}{R_1 + R_L} * R_L$$
+
+
+\end{document}
