@@ -5,6 +5,9 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 extern char RX_Buffer[16];
 char cmd[16];
 
+#define LD3_Pin GPIO_PIN_3
+#define LD3_GPIO_Port GPIOB
+
 void gen_random(char *data)
 {
 	uint32_t lower, upper;
@@ -30,14 +33,17 @@ void process_received()
 		{
 			case 'r': gen_random(data);
 					  break;
+			//  <--  more command's are possible to add here
 		}
 	}
 	else if(strncmp(cmd, "ACK\n",4) == 0)
 	{
-		//do nothing for ACK
+		//toggel LED for ACK
+		HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 	}
 	else
 	{
+		//data not in protocol style
 		printf("NACK\n");
 	}
 
@@ -47,7 +53,7 @@ void process_received()
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htimx)
 {
 	static uint32_t neg_index = 16;
-	//if for 10ms no change -> timeout and the read process is finished
+	//if for 10ms(time Frequency) no change -> timeout and the read process is finished
 	if(hdma_usart1_rx.Instance->CNDTR != 16 && neg_index == hdma_usart1_rx.Instance->CNDTR)
 	{
 		//copy DMA buffer to cmd buffer and clear DMA buffer
@@ -59,6 +65,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htimx)
 		hdma_usart1_rx.Instance->CNDTR = 16;
 		__HAL_DMA_ENABLE(&hdma_usart1_rx);
 		neg_index = 16;
+		//HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 		process_received();
 	}
 	else

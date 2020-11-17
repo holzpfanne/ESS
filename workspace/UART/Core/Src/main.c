@@ -126,6 +126,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+	  //everything is handled inside ISR
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
